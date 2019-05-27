@@ -18,8 +18,7 @@ class Genre(models.Model):
 
 class Language(models.Model):
     """Model representing a Language (e.g. English, French, Japanese, etc.)"""
-    name = models.CharField(max_length=200,
-                            help_text="Enter the book's natural language (e.g. English, French, Japanese etc.)")
+    name = models.CharField(max_length=200, help_text="Enter the book's natural language (e.g. English, French, Japanese etc.)")
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
@@ -52,6 +51,12 @@ class Book(models.Model):
         Returns the url to access a particular book instance.
         """
         return reverse('book-detail', args=[str(self.id)])
+    def display_genre(self):
+        """
+        Creates a string for the Genre. This is required to display genre in Admin.
+        """
+        return ', '.join([ genre.name for genre in self.genre.all()[:3] ])
+    display_genre.short_description = 'Genre'
 
 class BookInstance(models.Model):
     """
@@ -68,7 +73,7 @@ class BookInstance(models.Model):
         ('a', 'Available'),
         ('r', 'Reserved'),
     )
-
+    list_display = ('id', 'book', 'due_back')
     status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='m', help_text='Book availability')
 
     class Meta:
@@ -102,3 +107,4 @@ class Author(models.Model):
         String for representing the Model object.
         """
         return '%s, %s' % (self.last_name, self.first_name)
+
