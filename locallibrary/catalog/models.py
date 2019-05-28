@@ -45,7 +45,6 @@ class Book(models.Model):
         """
         return self.title
     
-    
     def get_absolute_url(self):
         """
         Returns the url to access a particular book instance.
@@ -57,6 +56,13 @@ class Book(models.Model):
         """
         return ', '.join([ genre.name for genre in self.genre.all()[:3] ])
     display_genre.short_description = 'Genre'
+     
+    def display_language(self):
+        """
+        Creates a string for the Genre. This is required to display genre in Admin.
+        """
+        return self.language
+    display_language.short_description = 'Language'
 
 class BookInstance(models.Model):
     """
@@ -73,9 +79,8 @@ class BookInstance(models.Model):
         ('a', 'Available'),
         ('r', 'Reserved'),
     )
-    list_display = ('id', 'book', 'due_back')
     status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='m', help_text='Book availability')
-
+    
     class Meta:
         ordering = ["due_back"]
         
@@ -85,6 +90,7 @@ class BookInstance(models.Model):
         String for representing the Model object
         """
         return '%s (%s)' % (self.id,self.book.title)
+
 
 class Author(models.Model):
     """
@@ -107,4 +113,3 @@ class Author(models.Model):
         String for representing the Model object.
         """
         return '%s, %s' % (self.last_name, self.first_name)
-
