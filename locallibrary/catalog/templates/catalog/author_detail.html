@@ -6,4 +6,17 @@
   <p><strong>Data of birth:</strong> <a href="">{{ book.date_of_birth }}</a></p> <!-- author detail link not yet defined -->
   <p><strong>Data of death:</strong> {{ author.date_of_death }}</p>
 
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Copies</h4>
+
+    {% for copy in author.book_set.all %}
+      <hr>
+      <p><strong>Title:</strong> {{copy.title}}</p> 
+      <p><strong>Summary:</strong> {{copy.summary}}</p> 
+      <p><strong>ISBN:</strong> {{copy.isbn}}</p> 
+      <p><strong>Language:</strong> {{copy.language}}</p> 
+    {% endfor %}
+  </div>
+
 {% endblock %}
